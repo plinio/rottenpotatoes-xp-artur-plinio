@@ -7,9 +7,17 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @orderBy = params[:orderBy]
+    if (@orderBy == 'title')
+      @movies = Movie.find(:all, :order => "title")
+    elsif(@orderBy == 'release_date')
+      @movies = Movie.find(:all, :order => "release_date")
+    else
+      @movies = Movie.all
+    end
+    
   end
-
+  
   def new
     # default: render 'new' template
   end
