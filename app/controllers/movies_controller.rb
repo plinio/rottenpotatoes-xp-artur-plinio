@@ -7,25 +7,37 @@ class MoviesController < ApplicationController
   end
 
   def index
+    session[:orderBy] ||= ''
+    session[:ratings] ||= Hash.new
+    
+    if((session[:orderBy] != '' && params[:orderBy].nil?) || (session[:ratings] != {} && params[:ratings].nil?))
+      params[:orderBy]   ||= session[:orderBy] 
+      params[:ratings] ||= session[:ratings]
+      redirect_to movies_path(params) and return
+      
+    end
+    
+    if !params[:orderBy].nil?
+      session[:orderBy] = params[:orderBy]
+    end
+    if !params[:ratings].nil?
+      session[:ratings] = params[:ratings]
+    end
+    
     @orderBy = params[:orderBy]
     @all_ratings = Movie.allRatings
-    #@ratings =  params[:ratings] == nil? @all_ratings :  params[:ratings]
+    
     if params[:ratings] == nil
       @ratings = Hash[ @all_ratings.collect { |v| [v , '1'] } ]
     else
       @ratings = params[:ratings]
     end 
     
-    
-    if (@orderBy == 'title')
-      @movies = Movie.find(:all, :order => "title")
-    elsif(@orderBy == 'release_date')
-      @movies = Movie.find(:all, :order => "release_date")
-    elsif(!@ratings.nil?)
+    if(!@ratings.nil?)
       @movies = Movie.where(:rating => @ratings.keys)
-    else
-      @movies = Movie.all
     end
+    
+    @movies = @movies.find(:all, :order => @orderBy)
     
   end
   
