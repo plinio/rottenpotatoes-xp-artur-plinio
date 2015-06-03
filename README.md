@@ -1,5 +1,7 @@
 HW2: RAILS INTRO - ADD FEATURES TO ROTTENPOTATOES
 ---------
+#http://rottenpotatoes-xp-artur-plinio.herokuapp.com/movies
+
 #https://rails-intro-xp-artur-plinio-arturcalves.c9.io/movies
 
 In this homework you will add a feature to an existing simple Rails app and deploy the result publicly on the Heroku cloud hosting service. We will run live integration tests against your deployed version.
