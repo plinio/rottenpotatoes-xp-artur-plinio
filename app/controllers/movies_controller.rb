@@ -9,13 +9,20 @@ class MoviesController < ApplicationController
   def index
     @orderBy = params[:orderBy]
     @all_ratings = Movie.allRatings
-
+    #@ratings =  params[:ratings] == nil? @all_ratings :  params[:ratings]
+    if params[:ratings] == nil
+      @ratings = Hash[ @all_ratings.collect { |v| [v , '1'] } ]
+    else
+      @ratings = params[:ratings]
+    end 
+    
+    
     if (@orderBy == 'title')
       @movies = Movie.find(:all, :order => "title")
     elsif(@orderBy == 'release_date')
       @movies = Movie.find(:all, :order => "release_date")
-    elsif(!params[:ratings].nil?)
-      @movies = Movie.where(:rating => params[:ratings].keys)
+    elsif(!@ratings.nil?)
+      @movies = Movie.where(:rating => @ratings.keys)
     else
       @movies = Movie.all
     end
